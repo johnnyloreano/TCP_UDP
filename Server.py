@@ -11,9 +11,9 @@ class Server:
         self.client = socket.socket(family=socket.AF_INET, type=self.kind)
 
     def init_server(self, message="Server is up!"):
-        return self.init_udp() if self.kind == socket.SOCK_DGRAM else self.init_tcp()
+        return self.init_udp(message) if self.kind == socket.SOCK_DGRAM else self.init_tcp(message)
 
-    def init_udp(message="Server is up!"):
+    def init_udp(self,message):
         self.client.bind((self.ip, self.port))
         print("Server is up!")
         while(True):
@@ -23,15 +23,16 @@ class Server:
             print("Message from Client:{}".format(client_message))
             print("Client IP Address:{}".format(address))
 
-            self.client.sendto(str.encode(message), address)
+            self.client.sendto(client_message, address)
 
-    def init_tcp(self):
+    def init_tcp(self,message):
         print("Initializing TCP Server...")
+        
         with self.client as s:
             s.bind((self.ip, self.port))
             s.listen()
             conn, addr = s.accept()
-            print("TCP Server up!")
+            print(message)
             with conn:
                 print('Connected by', addr)
                 while True:
@@ -40,4 +41,6 @@ class Server:
                         break
                     else:
                         print(data)
-                    conn.sendall(data)
+                    if(data):
+                        print("RECEIVED THIS PACKAGE:\n")
+                        conn.sendall(data)

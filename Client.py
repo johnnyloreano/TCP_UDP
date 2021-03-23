@@ -11,13 +11,11 @@ class Client:
     def send_message(self,data,port):
         if self.kind == socket.SOCK_DGRAM:
             self.client.sendto(data, port)
+            return self.client.recvfrom(self.buffer)
         else:
             self.client.sendall(data)
             res = self.client.recv(self.buffer)
             return res
-
-    def receive_message(self):
-        return self.client.recvfrom(self.buffer)
 
     def connect(self,port):
         self.client.connect(port)

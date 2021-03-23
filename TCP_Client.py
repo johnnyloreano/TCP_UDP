@@ -7,8 +7,7 @@ bufferSize = 1024
 tcp_client = Client('TCP', bufferSize)
 tcp_client.connect(server_port)
 
-file = open("test.txt", "rb")
-with open("test.txt", "rb") as f:
+with open("testBigFile.txt", "rb") as f:
     byte = f.read(bufferSize)
     msg = tcp_client.send_message(byte, None)
     print(msg)
